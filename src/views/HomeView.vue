@@ -326,8 +326,8 @@ import "leaflet/dist/leaflet.css";
 import { useRouter } from "vue-router";
 import API_ENDPOINT from "@/api-endpoint";
 import NotificationPanel from "@/components/NotificationPanel.vue";
-import { Facebook, Twitter, Instagram, Youtube } from 'lucide-vue-next'
-
+import { Facebook, Twitter, Instagram, Youtube } from "lucide-vue-next";
+import { fixLeafletIcon } from "@/utils/leaflet-icon-fix.js";
 const router = useRouter();
 
 const stories = ref([]);
@@ -355,6 +355,8 @@ let mapInstance = null;
 const markers = []; // Untuk melacak marker yang ada jika ingin dibersihkan nanti
 
 const initMap = () => {
+  // ✅ FIX UTAMA — panggil SEBELUM L.map() dan L.marker()
+    fixLeafletIcon();
   // Inisialisasi peta pertama kali
   mapInstance = L.map("map").setView([-6.2, 106.8166], 10);
 

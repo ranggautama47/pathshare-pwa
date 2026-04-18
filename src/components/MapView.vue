@@ -25,6 +25,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { fixLeafletIcon } from "@/utils/leaflet-icon-fix.js";
 
 // Props dari DetailView
 const props = defineProps({
@@ -41,14 +42,11 @@ const isLocating = ref(false);
 
 // Fix: Isu path marker default Leaflet saat dibuild menggunakan Vite
 delete L.Icon.Default.prototype._getIconUrl;
+
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: new URL(
-    "leaflet/dist/images/marker-icon-2x.png",
-    import.meta.url,
-  ).href,
-  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
-  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url)
-    .href,
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
 });
 
 onMounted(() => {
@@ -57,9 +55,10 @@ onMounted(() => {
 
 const initMap = () => {
   // Inisialisasi peta
+  fixLeafletIcon(); // ✅ WAJIB sebelum L.map()
+
   map = L.map(mapContainer.value).setView([props.lat, props.lon], 14);
 
-  // Layer OpenStreetMap (Bisa diakses offline jika di-cache oleh Service Worker)
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap contributors",
     maxZoom: 19,
