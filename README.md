@@ -86,7 +86,7 @@ The app works fully offline, supports push notifications, and is installable as 
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/pathshare.git
+git clone https://github.com/ranggautama47/pathshare.git
 cd pathshare
 
 # 2. Install dependencies
